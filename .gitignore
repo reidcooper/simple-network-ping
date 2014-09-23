@@ -1,0 +1,4 @@
+.DS_Store
+Gemfile.lock
+server_up.csv
+status.log
