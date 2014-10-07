@@ -58,10 +58,10 @@ The script also outputs the same output to a log file in the same directory of t
 
 Make sure you configure the passwords.example file. The file should have 4 lines: 
 
-* your email
-* your account name
+* your email (test@gmail.com)
+* your account username (test)
 * your account/email password
-* to Address
+* to Address (toAddress@gmail.com)
 
 Reference the example file.
 
