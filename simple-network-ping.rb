@@ -43,13 +43,14 @@ require 'mail'
 @logFile = ""
 @finalLog = 'server_up.csv'	#Location and log file of output
 @lastWebSiteToPing = "www.espn.com" # External website to ping
+$nums = Array.new()
 
-# For email, I created variables for easy upload to github
-# Replace x's with personal information
-$emailAddr = 'xxx'
-$usrName = 'xxx'
-$password = 'xxx'
-$toAddr = 'xxx'
+# Read in passwords from a file, make sure there is a passwords.txt
+def readPasswords()
+	File.foreach('passwords.txt').with_index { |line|
+	   $nums << line.chomp
+	}
+end
 
 def ipaddress()
 
@@ -72,9 +73,9 @@ def email(endScriptOutput)
 
 	options = { :address              => "smtp.gmail.com",
 	            :port                 => 587,
-	            :domain               => $emailAddr,
-	            :user_name            => $usrName,
-	            :password             => $password,
+	            :domain               => $nums[0],
+	            :user_name            => $nums[1],
+	            :password             => $nums[2],
 	            :authentication       => 'plain',
 	            :enable_starttls_auto => true  }
 
@@ -83,8 +84,8 @@ def email(endScriptOutput)
 	end
 
 	Mail.deliver do
-	       to $toAddr
-	     from $emailAddr
+	       to $nums[3]
+	     from $nums[0]
 	  subject endScriptOutput
 	     body ''
 	end
@@ -141,6 +142,9 @@ def check_ping(host)
 
 	sendMessage(host)
 end
+
+# First set up email info
+readPasswords()
 
 # In case the user wants to pass in an argument for a specific address
 # check_ping(ARGV[0])
