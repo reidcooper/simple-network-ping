@@ -110,7 +110,7 @@ def sendMessage(host)
 
 		endScriptOutput = Time.new.strftime("%Y-%m-%d %H:%M:%S").to_s + "," + @logFile
 
-		positiveRegex = /[+,+,+,+,+]/
+		positiveRegex = /(\+,\+,\+,\+,\+)/
 
 		if !endScriptOutput.match(positiveRegex)
 
@@ -150,11 +150,13 @@ check_ping("192.168.1.3")
 check_ping("192.168.100.1")
 
 # If External IP Address is unreachable, we still need to show the log the info
-if ipaddress() == false then
+testiPAddr = ipaddress()
+
+if testiPAddr == false then
 	@missed_pings = 5 #otherwise, it will pass
 	sendMessage("Error. Could Not Reach Home IP")
 else
-	check_ping(ipaddress())
+	check_ping(testiPAddr)
 end
 
 check_ping(@lastWebSiteToPing)
