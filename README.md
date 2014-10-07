@@ -54,5 +54,16 @@ Older Version:
 
 The script also outputs the same output to a log file in the same directory of the script. You can specify where you would like the script you desire.
 
+##Passwords:
+
+Make sure you configure the passwords.example file. The file should have 4 lines: 
+
+* your email
+* your account name
+* your account/email password
+* to Address
+
+Reference the example file.
+
 ##Run:
 	ruby simple-network-ping.rb
