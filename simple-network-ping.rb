@@ -148,9 +148,10 @@ readPasswords()
 
 # In case the user wants to pass in an argument for a specific address
 # check_ping(ARGV[0])
-# Pings (In this order): Router, Another networked device, Modem, My IP, Outside website
+# Pings (In this order): Router, Another networked device, Another networked device, Modem, My IP, Outside website
 check_ping("192.168.1.1")
 check_ping("192.168.1.3")
+check_ping("192.168.2.1")
 check_ping("192.168.100.1")
 
 # If External IP Address is unreachable, we still need to show the log the info
