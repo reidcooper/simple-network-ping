@@ -143,6 +143,22 @@ def check_ping(host)
 	sendMessage(host)
 end
 
+def check_log
+
+	$numberOfFaults = 0
+
+	File.foreach('status.csv').with_index { |line|
+		if line.chomp.include?(Time.new.strftime("%Y-%m-%d").to_s) then
+	   		$numberOfFaults+=1
+	   	end
+	}
+
+	if $numberOfFaults != 0 then
+		email($numberOfFaults)
+	end
+
+end
+
 # First set up email info
 readPasswords()
 
@@ -150,7 +166,7 @@ readPasswords()
 # check_ping(ARGV[0])
 # Pings (In this order): Router, Another networked device, Another networked device, Modem, My IP, Outside website
 check_ping("192.168.1.1")
-check_ping("192.168.1.3")
+check_ping("192.168.1.2")
 check_ping("192.168.2.1")
 check_ping("192.168.100.1")
 
@@ -165,3 +181,8 @@ else
 end
 
 check_ping(@lastWebSiteToPing)
+
+# Check to send at 11pm
+if Time.new.strftime("%H:%M") == "23:0"
+	check_log()
+end
