@@ -183,6 +183,6 @@ end
 check_ping(@lastWebSiteToPing)
 
 # Check to send at 11pm
-if Time.new.strftime("%H:%M") == "23:0"
+if (Time.new.strftime("%H%M").to_i >= 2300 && Time.new.strftime("%H%M").to_i <= 2305 )
 	check_log()
 end
