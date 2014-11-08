@@ -47,7 +47,7 @@ $nums = Array.new()
 
 # Read in passwords from a file, make sure there is a passwords.txt
 def readPasswords()
-	File.foreach('passwords.txt').with_index { |line|
+	File.foreach('/home/pi/simple-network-ping/passwords.txt').with_index { |line|
 	   $nums << line.chomp
 	}
 end
