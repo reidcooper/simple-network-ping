@@ -167,7 +167,7 @@ readPasswords()
 # Pings (In this order): Router, Another networked device, Another networked device, Modem, My IP, Outside website
 check_ping("192.168.1.1")
 check_ping("192.168.1.2")
-check_ping("192.168.2.1")
+check_ping("192.168.102.1")
 check_ping("192.168.100.1")
 
 # If External IP Address is unreachable, we still need to show the log the info
