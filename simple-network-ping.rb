@@ -40,6 +40,7 @@ require 'net/http'
 require 'mail'
 
 @missed_pings = 0
+@testiPAddr = true
 @logFile = ""
 @finalLog = 'server_up.csv'	#Location and log file of output
 @lastWebSiteToPing = "www.espn.com" # External website to ping
@@ -56,38 +57,41 @@ def ipaddress()
 
 	uri      = URI('http://jsonip.com/')
 
-	begin
-		response = Net::HTTP.get_response(uri)
-		data     = response.body
-		result   = JSON.parse(data)
-		ip = result['ip']
-		return ip
+	if @testiPAddr == true
+		begin
+			response = Net::HTTP.get_response(uri)
+			data     = response.body
+			result   = JSON.parse(data)
+			ip = result['ip']
+			return ip
 
-	rescue StandardError
-		return false
+		rescue StandardError
+			return false
+		end
 	end
-
 end
 
 def email(endScriptOutput)
 
-	options = { :address              => "smtp.gmail.com",
-	            :port                 => 587,
-	            :domain               => $nums[0],
-	            :user_name            => $nums[1],
-	            :password             => $nums[2],
-	            :authentication       => 'plain',
-	            :enable_starttls_auto => true  }
+	if @testiPAddr == true
+		options = { :address              => "smtp.gmail.com",
+		            :port                 => 587,
+		            :domain               => $nums[0],
+		            :user_name            => $nums[1],
+		            :password             => $nums[2],
+		            :authentication       => 'plain',
+		            :enable_starttls_auto => true  }
 
-	Mail.defaults do
-	  delivery_method :smtp, options
-	end
+		Mail.defaults do
+		  delivery_method :smtp, options
+		end
 
-	Mail.deliver do
-	       to $nums[3]
-	     from $nums[0]
-	  subject endScriptOutput
-	     body ''
+		Mail.deliver do
+		       to $nums[3]
+		     from $nums[0]
+		  subject endScriptOutput
+		     body ''
+		end
 	end
 end
 
@@ -135,9 +139,9 @@ def check_ping(host)
 	server = Net::Ping::External.new(host)
 
 	for i in 1..10 #change depending on how many pings you want to send
-		if not server.ping 
-			@missed_pings+=1
-		end
+			if not server.ping 
+				@missed_pings+=1
+			end
 	end
 
 	sendMessage(host)
@@ -147,7 +151,7 @@ def check_log
 
 	$numberOfFaults = 0
 
-	File.foreach('status.csv').with_index { |line|
+	File.foreach(@finalLog).with_index { |line|
 		if line.chomp.include?(Time.new.strftime("%Y-%m-%d").to_s) then
 	   		$numberOfFaults+=1
 	   	end
@@ -171,9 +175,9 @@ check_ping("192.168.102.1")
 check_ping("192.168.100.1")
 
 # If External IP Address is unreachable, we still need to show the log the info
-testiPAddr = ipaddress()
+@testiPAddr = ipaddress()
 
-if testiPAddr == false then
+if @testiPAddr == false then
 	@missed_pings = 5 #otherwise, it will pass
 	sendMessage("Error. Could Not Reach Home IP")
 else
@@ -183,6 +187,7 @@ end
 check_ping(@lastWebSiteToPing)
 
 # Check to send at 11pm
-if (Time.new.strftime("%H%M").to_i >= 2300 && Time.new.strftime("%H%M").to_i <= 2305 )
+currentTime = Time.new.strftime("%H%M").to_i
+if (currentTime >= 2300 && currentTime <= 2305 )
 	check_log()
 end
