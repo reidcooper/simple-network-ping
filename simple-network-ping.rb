@@ -66,14 +66,15 @@ def ipaddress()
 			return ip
 
 		rescue StandardError
-			return false
+			return @testiPAddr = false
 		end
+	else
+		return @testiPAddr = false
 	end
 end
 
 def email(endScriptOutput)
-
-	if @testiPAddr == true
+	if @testiPAddr != false
 		options = { :address              => "smtp.gmail.com",
 		            :port                 => 587,
 		            :domain               => $nums[0],
@@ -176,7 +177,6 @@ check_ping("192.168.100.1")
 
 # If External IP Address is unreachable, we still need to show the log the info
 @testiPAddr = ipaddress()
-
 if @testiPAddr == false then
 	@missed_pings = 5 #otherwise, it will pass
 	sendMessage("Error. Could Not Reach Home IP")
