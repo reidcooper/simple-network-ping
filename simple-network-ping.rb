@@ -181,7 +181,7 @@ if @testiPAddr == false then
 	@missed_pings = 5 #otherwise, it will pass
 	sendMessage("Error. Could Not Reach Home IP")
 else
-	check_ping(testiPAddr)
+	check_ping(@testiPAddr)
 end
 
 check_ping(@lastWebSiteToPing)
