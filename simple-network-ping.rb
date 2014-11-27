@@ -99,13 +99,13 @@ end
 def sendMessage(host)
 
 	if host == @lastWebSiteToPing
-		if @missed_pings > 3 then
+		if @missed_pings > 2 then
 			@logFile.concat("-")
 		else
 			@logFile.concat("+")
 		end
 	else
-		if @missed_pings > 3 then
+		if @missed_pings > 2 then
 			@logFile.concat("-,")
 		else
 			@logFile.concat("+,")
@@ -139,7 +139,7 @@ def check_ping(host)
 	@missed_pings = 0
 	server = Net::Ping::External.new(host)
 
-	for i in 1..10 #change depending on how many pings you want to send
+	for i in 1..5 #change depending on how many pings you want to send
 			if not server.ping 
 				@missed_pings+=1
 			end
